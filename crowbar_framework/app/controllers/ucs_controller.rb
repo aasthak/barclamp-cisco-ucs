@@ -154,6 +154,7 @@ class UcsController < ApplicationController
       action = COMPUTE_SERVICE_PROFILE
     when "storage"
       action = STORAGE_SERVICE_PROFILE
+    # see the docs for the ls:Power class for the next 3 action string values:
     when "up"
       action = "admin-up"
     when "down"
@@ -245,10 +246,11 @@ class UcsController < ApplicationController
     get_class_instances('computePhysical').each do |element|
       if params[element.attributes["dn"]] == "1"
         match_count += 1
+        # An example of the following action is given in the API docs
+        # for the config:ConfMos method.
         @updateDoc = @updateDoc + <<-EOXML
           <pair key='#{element.attributes["dn"]}'>
-            <#{element.name} adminPower='#{action}' dn='#{element.attributes["dn"]}'>
-            </#{element.name}>
+            <lsPower dn='#{element.attributes["dn"]}' state="#{action}" status="modified" />
           </pair>
         EOXML
       end
