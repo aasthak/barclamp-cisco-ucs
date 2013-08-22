@@ -159,6 +159,7 @@ class UcsController < ApplicationController
       action = "admin-up"
     when "down"
       action = "admin-down"
+      action = "hard-reset-immediate"
     when "reboot"
       action = "cycle-immediate"
     else
@@ -179,7 +180,7 @@ class UcsController < ApplicationController
     end
 
     @updateDoc = \
-      "<configConfMos inHierarchical='false' cookie='#{ucs_session_cookie}'><inConfigs>" +
+      "<configConfMos inHierarchical='no' cookie='#{ucs_session_cookie}'><inConfigs>" +
       @updateDoc +
       "</inConfigs></configConfMos>"
 
