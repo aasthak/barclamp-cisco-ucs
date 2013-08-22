@@ -182,7 +182,9 @@ class UcsController < ApplicationController
       @updateDoc +
       "</inConfigs></configConfMos>"
 
+    logger.debug "Cisco UCS: sending XML to API server:\n" + pp_xml(@updateDoc)
     serverResponseDoc = sendXML(@updateDoc)
+    logger.debug "Cisco UCS: received API response:\n" + pp_element(serverResponseDoc)
     redirect_to ucs_edit_path, :notice => 'Your update has been applied.'
   end
 
@@ -300,7 +302,7 @@ class UcsController < ApplicationController
       raise XMLAPIResponseFailure, api_response
     end
 
-    return REXML::Document.new(api_response.body)
+    REXML::Document.new(api_response.body)
   end
 
   def aaaLogin(ucs_url, username, password)
